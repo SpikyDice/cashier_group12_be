@@ -22,7 +22,7 @@ module.exports = {
         name
       )}, ${db.escape(hashpassword)}, ${db.escape(email)}, ${db.escape(
         address
-      )}, null)`;
+      )}, 0, 0)`;
 
       query(addUserQuery, (err, result) => {
         if (err) {
@@ -50,7 +50,7 @@ module.exports = {
       let validator = await bcrypt.compare(password, isEmailExist[0].password);
       if (!validator) {
         return res
-          .status(200)
+          .status(400)
           .send({ success: false, message: "Password not match" });
       }
 
@@ -67,5 +67,8 @@ module.exports = {
     }
 
     // bcrypt.compare(password)
+  },
+  fetchUser: async (req, res) => {
+    console.log(req.params);
   },
 };

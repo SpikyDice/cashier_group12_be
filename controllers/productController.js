@@ -3,7 +3,7 @@ const { db, query } = require(`../database/index`);
 module.exports = {
   fetchAllProduct: async (req, res) => {
     try {
-      let queryProduct = `select category.name as category, product.name as name, price from product left join category on product.idcategory = category.idcategory`;
+      let queryProduct = `select idproduct, category.name as category, product.name as name, price from product left join category on product.idcategory = category.idcategory`;
       let allProduct = await query(queryProduct);
       if (!(allProduct.length > 0)) {
         return res

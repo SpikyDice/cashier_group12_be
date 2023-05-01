@@ -70,7 +70,9 @@ module.exports = {
       }
 
       //get category's id
-      let categoryIdQuery = `select idcategory from category where name=${db.escape(productCategory)}`;
+      let categoryIdQuery = `SELECT idcategory
+      FROM category
+      WHERE name=${db.escape(productCategory)}`;
       let categoryId = await query(categoryIdQuery);
       categoryId = Object.values(categoryId[0])[0];
 

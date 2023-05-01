@@ -57,4 +57,37 @@ module.exports = {
       return res.status(400).send(error);
     }
   },
+  updateProduct: async (req, res) => {
+    try {
+      //destructuring the data
+      const { idProduct, userId, productName, productCategory, productPrice, productStock } = req.body;
+
+      //look whether the category already exist or not
+      let getProductQuery = `select * from product where idproduct=${db.escape(idProduct)}`;
+      let isProductExist = await query(getProductQuery);
+      if (isProductExist.length == 0) {
+        return res.status(200).send({ success: false, message: "Product doesn't exist" });
+      }
+
+      //get category's id
+      let categoryIdQuery = `select idcategory from category where name=${db.escape(productCategory)}`;
+      let categoryId = await query(categoryIdQuery);
+      categoryId = Object.values(categoryId[0])[0];
+
+      //update db
+      let updateProductQuery = `UPDATE product
+      SET
+      name = ${db.escape(productName)},
+      idcategory = ${db.escape(categoryId)},
+      price = ${db.escape(productPrice)},
+      stock = ${db.escape(productStock)}
+      WHERE idproduct = ${db.escape(idProduct)}
+      `;
+      let updateProductResult = await query(updateProductQuery);
+
+      return res.status(200).send({ success: true, message: "Product updated", updateProductResult });
+    } catch (error) {
+      return res.status(400).send(error);
+    }
+  },
 };

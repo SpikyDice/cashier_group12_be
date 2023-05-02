@@ -10,5 +10,9 @@ router.post(
 
 router.post(`/addtransaction`, transactionController.addTransaction);
 router.get(`/getalltransaction/:id`, transactionController.fetchAllTransaction);
+router.post(
+  `/gettransactionondate/:id`,
+  transactionController.fetchTransactionOnDateRange
+);
 
 module.exports = router;

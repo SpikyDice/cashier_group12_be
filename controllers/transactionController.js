@@ -164,4 +164,23 @@ module.exports = {
       return res.status(400).send(error);
     }
   },
+  fetchTopProduct: async (req, res) => {
+    try {
+      const { id } = req.params;
+      let isUserExistQuery = `select * from users where iduser=${id}`;
+      let isUserExist = await query(isUserExistQuery);
+      if (isUserExist.length === 0) {
+        return res.status(200).send({ success: false, message: "No ID found" });
+      }
+      // const limitProduct = 10;
+      let topProductQuery = `select product.name, category.name as category, sum(transaction_product.quantity) as soldItem from transaction_product inner join transaction on transaction_product.idtransaction = transaction.idtransaction inner join product on transaction_product.idproduct = product.idproduct inner join category on product.idcategory = category.idcategory where transaction.iduser=${id} group by product.name, category.name order by sum(transaction_product.quantity) desc;`;
+      // console.log(topProductQuery);
+      let result = await query(topProductQuery);
+      res
+        .status(200)
+        .send({ success: true, message: "Fetching Success", result });
+    } catch (error) {
+      return res.status(400).send(error);
+    }
+  },
 };

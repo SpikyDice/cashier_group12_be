@@ -14,5 +14,6 @@ router.post(
   `/gettransactionondate/:id`,
   transactionController.fetchTransactionOnDateRange
 );
+router.get(`/fetchtopproduct/:id`, transactionController.fetchTopProduct);
 
 module.exports = router;
